@@ -4,6 +4,8 @@ let data = {};
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
 
+let ObjectId = require('mongodb').ObjectId;
+
 // collection name is robots
 let url = 'mongodb://localhost:27017/test';
 
@@ -82,6 +84,22 @@ let findEmployeesBySkill = function(skill, callback) {
   });
 }
 
+let findEmployeesById = function(searchId, callback) {
+  // Use connect method to connect to the server
+  MongoClient.connect(url, function(err, db) {
+    assert.equal(null, err);
+    console.log("Connected successfully to server");
+
+    let collection = db.collection('robots');
+    console.log(`searchId is: ${searchId}`);
+    collection.find({"_id": ObjectId(searchId)}).toArray( (err, docs) => {
+      assert.equal(err, null);
+      console.log(`Found user records`);
+      callback(docs);
+    });
+  });
+}
+
 let encodeSkills = function(data) {
   let uniqueSkills = [];
   data.users = data.users.map((user)=> {
@@ -142,6 +160,16 @@ router.get('/skill/:skillname', (req, res) => {
   console.log(`Skill search: ${searchSkill}`);
 
   findEmployeesBySkill( searchSkill, (docs) => {
+    data.users = docs;
+    data = encodeSkills(data);
+    res.render('directory', data);
+  })
+})
+
+router.get('/edit/:id', (req, res) => {
+  let searchId = req.params.id;
+
+  findEmployeesById(searchId, (docs) => {
     data.users = docs;
     data = encodeSkills(data);
     res.render('directory', data);
