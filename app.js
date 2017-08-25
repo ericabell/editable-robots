@@ -1,7 +1,9 @@
-const express = require('express');
-const mustacheExpress = require('mustache-express');
-const morgan = require('morgan');
-const ejs = require('ejs');
+const express = require('express'),
+      mustacheExpress = require('mustache-express'),
+      morgan = require('morgan'),
+      passport = require('passport'),
+      LocalStrategy = require('passport-local').Strategy,
+      ejs = require('ejs');
 
 let users = require('./routes/users.js');
 let auth = require('./routes/auth.js');
