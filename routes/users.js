@@ -166,7 +166,8 @@ router.get('/skill/:skillname', (req, res) => {
   })
 })
 
-router.get('/edit/:id', (req, res) => {
+// display a single robot's entry, with edit button
+router.get('/robot/:id', (req, res) => {
   let searchId = req.params.id;
 
   findEmployeesById(searchId, (docs) => {
@@ -174,6 +175,11 @@ router.get('/edit/:id', (req, res) => {
     data = encodeSkills(data);
     res.render('directory', data);
   })
+})
+
+// display a single robot with editing (if authenticated)
+router.get('/edit/:id', (req, res) => {
+  res.send('edit a robot');
 })
 
 module.exports = router;
