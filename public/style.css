@@ -1,0 +1,29 @@
+span {
+  color: red;
+}
+
+.person {
+  border-style: solid;
+  border-width: 2px;
+  padding: 20px;
+  margin: 20px;
+  width: 400px;
+
+}
+
+.img-circle {
+    border-radius: 50%;
+}
+
+img {
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgb(166, 166, 166);
+  padding: 5px;
+}
+
+.shadow {
+  -moz-box-shadow:    3px 3px 5px 6px #ccc;
+  -webkit-box-shadow: 3px 3px 5px 6px #ccc;
+  box-shadow:         3px 3px 5px 6px #ccc;
+}

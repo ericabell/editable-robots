@@ -1,0 +1,2 @@
+db.robots.update( { _id: ObjectId("599c62849be950d48fd9d861") },
+  { $set: { skills: ["Work Effectively", "CWS", "Kickstart", "SolidWorks"] } } )
