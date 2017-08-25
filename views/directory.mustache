@@ -32,7 +32,7 @@
         {{#users}}
           <div class="person shadow">
             <img class="img-circle" src="{{avatar}}" alt="image">
-            <h3>{{name}}</h3>
+            <h3><a href="http://localhost:3000/edit/{{_id}}">{{name}}</a></h3>
             <p>
               {{#address.city}} {{address.city}}, <a href="http://localhost:3000/country/{{address.country}}">{{address.country}}</a> | {{/address.city}} {{#job}} {{job}}, {{company}} {{/job}}  {{^job}} <span>Available for hire</span> {{/job}}
             </p>
