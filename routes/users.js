@@ -124,7 +124,8 @@ router.get('/', (req, res) => {
     data.users = docs;
     // encode the skills
     data = encodeSkills(data);
-    res.render('directory', data);
+    console.log(data);
+    res.render('pages/directory', {users: data.users});
   });
 });
 
@@ -132,7 +133,7 @@ router.get('/employed', (req, res) => {
   findEmployedUsers( (docs) => {
     data.users = docs;
     data = encodeSkills(data);
-    res.render('directory', data);
+    res.render('pages/directory', {users: data.users});
   })
 });
 
@@ -140,7 +141,7 @@ router.get('/unemployed', (req, res) => {
   findUnEmployedUsers( (docs) => {
     data.users = docs;
     data = encodeSkills(data);
-    res.render('directory', data);
+    res.render('pages/directory', {users: data.users});
   })
 });
 
@@ -150,7 +151,7 @@ router.get('/country/:name', (req, res) => {
   findEmployeesByCountry( country, (docs) => {
     data.users = docs;
     data = encodeSkills(data);
-    res.render('directory', data);
+    res.render('pages/directory', {users: data.users});
   })
 })
 
@@ -162,7 +163,7 @@ router.get('/skill/:skillname', (req, res) => {
   findEmployeesBySkill( searchSkill, (docs) => {
     data.users = docs;
     data = encodeSkills(data);
-    res.render('directory', data);
+    res.render('pages/directory', {users: data.users});
   })
 })
 
@@ -173,7 +174,7 @@ router.get('/robot/:id', (req, res) => {
   findEmployeesById(searchId, (docs) => {
     data.users = docs;
     data = encodeSkills(data);
-    res.render('directory', data);
+    res.render('pages/directory', {users: data.users});
   })
 })
 
