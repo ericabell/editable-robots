@@ -3,6 +3,11 @@ const express = require('express');
 let data = {};
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb://localhost:27017/test', {useMongoClient: true});
+
+let Robot = require('../models/robots.js');
 
 let ObjectId = require('mongodb').ObjectId;
 
@@ -120,39 +125,55 @@ let encodeSkills = function(data) {
 let router = express.Router();
 
 router.get('/', (req, res) => {
-  findUsers( (docs) => {
-    data.users = docs;
-    // encode the skills
-    data = encodeSkills(data);
-    console.log(data);
-    res.render('pages/directory', {users: data.users});
-  });
+  Robot.find({})
+    .then( (docs) => {
+      data.users = docs;
+      // encode the skills
+      data = encodeSkills(data);
+      res.render('pages/directory', {users: data.users});
+    })
+    .catch( (err) => {
+      res.send(err);
+    })
 });
 
 router.get('/employed', (req, res) => {
-  findEmployedUsers( (docs) => {
-    data.users = docs;
-    data = encodeSkills(data);
-    res.render('pages/directory', {users: data.users});
-  })
+  Robot.find({job: {$ne: null}})
+    .then( (docs) => {
+      data.users = docs;
+      // encode the skills
+      data = encodeSkills(data);
+      res.render('pages/directory', {users: data.users});
+    })
+    .catch( (err) => {
+      res.send(err);
+    })
 });
 
 router.get('/unemployed', (req, res) => {
-  findUnEmployedUsers( (docs) => {
-    data.users = docs;
-    data = encodeSkills(data);
-    res.render('pages/directory', {users: data.users});
-  })
+  Robot.find({job: {$eq: null}})
+    .then( (docs) => {
+      data.users = docs;
+      // encode the skills
+      data = encodeSkills(data);
+      res.render('pages/directory', {users: data.users});
+    })
+    .catch( (err) => {
+      res.send(err);
+    })
 });
 
 router.get('/country/:name', (req, res) => {
-  console.log(`Country search: ${req.params.name}`);
-  let country = req.params.name
-  findEmployeesByCountry( country, (docs) => {
-    data.users = docs;
-    data = encodeSkills(data);
-    res.render('pages/directory', {users: data.users});
-  })
+  Robot.find({country: {$eq: req.params.name}})
+    .then( (docs) => {
+      data.users = docs;
+      // encode the skills
+      data = encodeSkills(data);
+      res.render('pages/directory', {users: data.users});
+    })
+    .catch( (err) => {
+      res.send(err);
+    })
 })
 
 router.get('/skill/:skillname', (req, res) => {
@@ -160,22 +181,32 @@ router.get('/skill/:skillname', (req, res) => {
   let searchSkill = decodeURIComponent(req.params.skillname);
   console.log(`Skill search: ${searchSkill}`);
 
-  findEmployeesBySkill( searchSkill, (docs) => {
-    data.users = docs;
-    data = encodeSkills(data);
-    res.render('pages/directory', {users: data.users});
-  })
+  Robot.find({"skills": searchSkill})
+    .then( (docs) => {
+      data.users = docs;
+      // encode the skills
+      data = encodeSkills(data);
+      res.render('pages/directory', {users: data.users});
+    })
+    .catch( (err) => {
+      res.send(err);
+    })
 })
 
 // display a single robot's entry, with edit button
 router.get('/robot/:id', (req, res) => {
   let searchId = req.params.id;
 
-  findEmployeesById(searchId, (docs) => {
-    data.users = docs;
-    data = encodeSkills(data);
-    res.render('pages/directory', {users: data.users});
-  })
+  Robot.find({"_id": searchId})
+    .then( (docs) => {
+      data.users = docs;
+      // encode the skills
+      data = encodeSkills(data);
+      res.render('pages/directory', {users: data.users});
+    })
+    .catch( (err) => {
+      res.send(err);
+    })
 })
 
 // display a single robot with editing (if authenticated)
