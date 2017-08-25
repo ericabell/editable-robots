@@ -124,4 +124,8 @@ router.get('/edit/:id', (req, res) => {
   res.send('edit a robot');
 })
 
+router.get('/login', (req, res) => {
+  res.render('pages/login');
+})
+
 module.exports = router;
