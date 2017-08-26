@@ -35,6 +35,7 @@ router.get('/failure', (req, res) => {
 
 router.get('/logout', (req, res) => {
   // TODO: logout passport
+  req.logout();
   res.redirect('/');
 })
 
