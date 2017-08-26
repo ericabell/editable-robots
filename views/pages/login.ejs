@@ -4,8 +4,16 @@
   <form id='login-form'  action="/login" method="post">
     <div class="form-group">
       <label for="username">Username</label>
-      <input type="text" class="form-control" name="username" placeholder="Username">
+      <select class="form-control" name='username'>
+        <% users.forEach(function(user) { %>
+          <option value='<%= user.username %>'> <%= user.username %> </option>
+        <% }) %>
+      </select>
     </div>
+    <%# <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" class="form-control" name="username" placeholder="Username">
+    </div>%>
     <div class="form-group">
       <label for="password">Password</label>
       <input type="password" class="form-control" name="password" placeholder="">

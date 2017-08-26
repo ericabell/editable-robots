@@ -8,7 +8,12 @@ let User = require('../models/auth.js');
 
 // USER AUTH ROUTES FOR LOGIN AND REGISTER
 router.get('/login', (req, res) => {
-  res.render('pages/login');
+  // get a user list from the database
+  User.find({}).select('username')
+    .then( (docs) => {
+      console.log(docs);
+      res.render('pages/login', {users: docs});
+    })
 });
 
 const checkPost = function(req, res, next) {
