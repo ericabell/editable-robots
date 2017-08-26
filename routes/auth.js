@@ -43,8 +43,10 @@ router.get('/register', (req, res) => {
 });
 
 router.post('/register', (req, res) => {
-  // TODO: create user credentials
-  User.create({username: req.body.username, password: req.body.password},
+  User.create({username: req.body.username,
+               password: req.body.password,
+               name: req.body.name
+             },
     function(err, doc) {
       if( err ) throw err;
       console.log(doc);
