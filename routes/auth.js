@@ -4,6 +4,7 @@ const passport = require('passport');
 let router = express.Router();
 
 let User = require('../models/auth.js');
+let Robot = require('../models/robots.js');
 
 
 // USER AUTH ROUTES FOR LOGIN AND REGISTER
@@ -58,6 +59,15 @@ router.post('/register', (req, res) => {
       console.log(doc);
       console.log('user created successfully!');
     });
+  Robot.create({username: req.body.username,
+                name: req.body.name
+             },
+    function(err, doc) {
+      if( err ) throw err;
+      console.log(doc);
+      console.log('robot created successfully');
+    });
+    
   res.redirect('/');
 })
 
