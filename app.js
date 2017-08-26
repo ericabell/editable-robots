@@ -5,6 +5,7 @@ const express = require('express'),
       LocalStrategy = require('passport-local').Strategy,
       bodyParser = require('body-parser'),
       session = require('express-session'),
+      mongoDBStore = require('connect-mongodb-session')(session),
       ejs = require('ejs');
 
 // app-level connect to robot-directory database
@@ -61,12 +62,27 @@ passport.deserializeUser(function(id, done) {
   })
 });
 
+// set up the express-session store to use MongoDB
+// this allows us to kill the server and still have session data available
+let store = new mongoDBStore(
+  {
+    uri: 'mongodb://localhost:27017/robot-directory',
+    collection: 'session-store'
+  }
+);
+
+store.on('error', (e) => {
+  assert.ifError(e);
+  assert.ok(false);
+});
+
 // set up express-session
 app.use(session({
   secret: 'keyboard cat',
   cookie: {
     maxAge: 1000 * 60 * 60 * 24 * 7 //1 week
   },
+  store: store,
   resave: true,
   saveUninitialized: true
 }));
