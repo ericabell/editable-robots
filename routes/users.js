@@ -124,6 +124,8 @@ router.get('/robot/:id', (req, res) => {
 // this is a protected route requires auth.
 
 router.get('/edit/:id', requireLogin, (req, res) => {
+  // TODO: logged in users can grab id of another user
+  // and edit that user. Need to fix this.
   let searchId = req.params.id;
 
   Robot.find({"_id": searchId})
@@ -136,6 +138,37 @@ router.get('/edit/:id', requireLogin, (req, res) => {
       res.send(err);
     })
 })
+
+router.post('/edit/:id', (req, res) => {
+  let searchId = req.params.id;
+
+  let newName = req.body.name;
+  let newEmail = req.body.email || '';
+  let newUniversity = req.body.university || '';
+  let newJob = req.body.job || '';
+  let newCompany = req.body.company || '';
+  let newPhone = req.body.phone || '';
+
+  Robot.findByIdAndUpdate(
+      searchId,
+      {
+        $set: {name: newName,
+               email: newEmail,
+               university: newUniversity,
+               job: newJob,
+               company: newCompany,
+               phone: newPhone}
+      },
+      {
+        new: true
+      },
+      (err, doc) => {
+          if(err) throw err;
+          console.log(`Robot ${searchId} updated name to ${doc}`);
+          res.redirect('/');
+      }
+  );
+});
 
 
 module.exports = router;
