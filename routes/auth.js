@@ -19,7 +19,7 @@ const checkPost = function(req, res, next) {
 
 router.post('/login', checkPost,
   passport.authenticate('local', {
-    successRedirect: '/success',
+    successRedirect: '/',
     failureRedirect: '/failure',
   })
 );
@@ -44,6 +44,12 @@ router.get('/register', (req, res) => {
 
 router.post('/register', (req, res) => {
   // TODO: create user credentials
+  User.create({username: req.body.username, password: req.body.password},
+    function(err, doc) {
+      if( err ) throw err;
+      console.log(doc);
+      console.log('user created successfully!');
+    });
   res.redirect('/');
 })
 
