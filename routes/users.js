@@ -34,7 +34,7 @@ router.get('/', (req, res) => {
     .then( (docs) => {
       // encode the skills
       docs = encodeSkills(docs);
-      res.render('pages/directory', {users: docs});
+      res.render('pages/directory', {users: docs, userInfo: req.user});
     })
     .catch( (err) => {
       res.send(err);
@@ -46,7 +46,7 @@ router.get('/employed', (req, res) => {
     .then( (docs) => {
       // encode the skills
       docs = encodeSkills(docs);
-      res.render('pages/directory', {users: docs});
+      res.render('pages/directory', {users: docs, userInfo: req.user});
     })
     .catch( (err) => {
       res.send(err);
@@ -58,7 +58,7 @@ router.get('/unemployed', (req, res) => {
     .then( (docs) => {
       // encode the skills
       docs = encodeSkills(docs);
-      res.render('pages/directory', {users: docs});
+      res.render('pages/directory', {users: docs, userInfo: req.user});
     })
     .catch( (err) => {
       res.send(err);
@@ -70,7 +70,7 @@ router.get('/country/:name', (req, res) => {
     .then( (docs) => {
       // encode the skills
       docs = encodeSkills(docs);
-      res.render('pages/directory', {users: docs});
+      res.render('pages/directory', {users: docs, userInfo: req.user});
     })
     .catch( (err) => {
       res.send(err);
@@ -86,7 +86,7 @@ router.get('/skill/:skillname', (req, res) => {
     .then( (docs) => {
       // encode the skills
       docs = encodeSkills(docs);
-      res.render('pages/directory', {users: docs});
+      res.render('pages/directory', {users: docs, userInfo: req.user});
     })
     .catch( (err) => {
       res.send(err);
@@ -101,7 +101,7 @@ router.get('/robot/:id', (req, res) => {
     .then( (docs) => {
       // encode the skills
       docs = encodeSkills(docs);
-      res.render('pages/directory', {users: docs});
+      res.render('pages/directory', {users: docs, userInfo: req.user});
     })
     .catch( (err) => {
       res.send(err);

@@ -19,7 +19,7 @@
 
     <div class="row">
       <div class="col-xs-12">
-        Welcome, user
+        Welcome, <% if( userInfo ) { %> <%= userInfo.name %> <% } else { %> Anonymous User <% } %>
       </div>
     </div>
   </div>
