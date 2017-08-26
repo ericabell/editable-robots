@@ -42,7 +42,7 @@ passport.use(new LocalStrategy(function(username, password, done) {
         return done(null, false, {message: 'incorrect username'});
       }
 
-      if( user.password != password ) {
+      if( !user.authenticate(password) ) {
         return done( null, false, {message: 'incorrect password'} );
       }
 
