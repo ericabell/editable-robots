@@ -3,21 +3,15 @@ const express = require('express');
 let data = {};
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
-const mongoose = require('mongoose');
-
-mongoose.connect('mongodb://localhost:27017/test', {useMongoClient: true});
 
 let Robot = require('../models/robots.js');
 
 let ObjectId = require('mongodb').ObjectId;
 
-// collection name is robots
-let url = 'mongodb://localhost:27017/test';
-
 
 let encodeSkills = function(data) {
   let uniqueSkills = [];
-  data.users = data.users.map((user)=> {
+  data = data.map((user)=> {
     let listOfSkills = user.skills; // array of skills
     let newSkillsList = [];
     listOfSkills.forEach( (skill) => {
@@ -35,12 +29,12 @@ let encodeSkills = function(data) {
 let router = express.Router();
 
 router.get('/', (req, res) => {
+  console.log(req.user);
   Robot.find({})
     .then( (docs) => {
-      data.users = docs;
       // encode the skills
-      data = encodeSkills(data);
-      res.render('pages/directory', {users: data.users});
+      docs = encodeSkills(docs);
+      res.render('pages/directory', {users: docs});
     })
     .catch( (err) => {
       res.send(err);
@@ -50,10 +44,9 @@ router.get('/', (req, res) => {
 router.get('/employed', (req, res) => {
   Robot.find({job: {$ne: null}})
     .then( (docs) => {
-      data.users = docs;
       // encode the skills
-      data = encodeSkills(data);
-      res.render('pages/directory', {users: data.users});
+      docs = encodeSkills(docs);
+      res.render('pages/directory', {users: docs});
     })
     .catch( (err) => {
       res.send(err);
@@ -63,10 +56,9 @@ router.get('/employed', (req, res) => {
 router.get('/unemployed', (req, res) => {
   Robot.find({job: {$eq: null}})
     .then( (docs) => {
-      data.users = docs;
       // encode the skills
-      data = encodeSkills(data);
-      res.render('pages/directory', {users: data.users});
+      docs = encodeSkills(docs);
+      res.render('pages/directory', {users: docs});
     })
     .catch( (err) => {
       res.send(err);
@@ -76,10 +68,9 @@ router.get('/unemployed', (req, res) => {
 router.get('/country/:name', (req, res) => {
   Robot.find({country: {$eq: req.params.name}})
     .then( (docs) => {
-      data.users = docs;
       // encode the skills
-      data = encodeSkills(data);
-      res.render('pages/directory', {users: data.users});
+      docs = encodeSkills(docs);
+      res.render('pages/directory', {users: docs});
     })
     .catch( (err) => {
       res.send(err);
@@ -93,10 +84,9 @@ router.get('/skill/:skillname', (req, res) => {
 
   Robot.find({"skills": searchSkill})
     .then( (docs) => {
-      data.users = docs;
       // encode the skills
-      data = encodeSkills(data);
-      res.render('pages/directory', {users: data.users});
+      docs = encodeSkills(docs);
+      res.render('pages/directory', {users: docs});
     })
     .catch( (err) => {
       res.send(err);
@@ -109,10 +99,9 @@ router.get('/robot/:id', (req, res) => {
 
   Robot.find({"_id": searchId})
     .then( (docs) => {
-      data.users = docs;
       // encode the skills
-      data = encodeSkills(data);
-      res.render('pages/directory', {users: data.users});
+      docs = encodeSkills(docs);
+      res.render('pages/directory', {users: docs});
     })
     .catch( (err) => {
       res.send(err);
