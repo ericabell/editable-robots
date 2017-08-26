@@ -130,9 +130,10 @@ router.get('/edit/:id', requireLogin, (req, res) => {
 
   Robot.find({"_id": searchId})
     .then( (docs) => {
-      // encode the skills
-      docs = encodeSkills(docs);
-      res.render('pages/edit', {users: docs, userInfo: req.user});
+      // make skills into a comma-separated list for the form
+      let skillString = docs[0].skills.join(',');
+      console.log(skillString);
+      res.render('pages/edit', {users: docs, userInfo: req.user, skillString: skillString});
     })
     .catch( (err) => {
       res.send(err);
@@ -149,6 +150,8 @@ router.post('/edit/:id', (req, res) => {
   let newCompany = req.body.company || '';
   let newPhone = req.body.phone || '';
 
+  let newSkills = req.body.skills.split(',') || '';
+
   Robot.findByIdAndUpdate(
       searchId,
       {
@@ -157,7 +160,8 @@ router.post('/edit/:id', (req, res) => {
                university: newUniversity,
                job: newJob,
                company: newCompany,
-               phone: newPhone}
+               phone: newPhone,
+               skills: newSkills}
       },
       {
         new: true
