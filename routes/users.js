@@ -8,6 +8,18 @@ let Robot = require('../models/robots.js');
 
 let ObjectId = require('mongodb').ObjectId;
 
+// to protect certain routes, we need to apply some middleware
+// I'm using a function called requireLogin
+const requireLogin = function(req, res, next) {
+  if(req.user) {
+    next(); // we authenticate, so give the user what they want
+  } else {
+    // this is whatever we want to have happen if the user
+    // is not authenticated.
+    res.redirect('/login');
+  }
+}
+
 
 let encodeSkills = function(data) {
   let uniqueSkills = [];
@@ -109,8 +121,20 @@ router.get('/robot/:id', (req, res) => {
 })
 
 // display a single robot with editing (if authenticated)
-router.get('/edit/:id', (req, res) => {
-  res.send('edit a robot');
+// this is a protected route requires auth.
+
+router.get('/edit/:id', requireLogin, (req, res) => {
+  let searchId = req.params.id;
+
+  Robot.find({"_id": searchId})
+    .then( (docs) => {
+      // encode the skills
+      docs = encodeSkills(docs);
+      res.render('pages/edit', {users: docs, userInfo: req.user});
+    })
+    .catch( (err) => {
+      res.send(err);
+    })
 })
 
 

@@ -1,0 +1,49 @@
+<% include ../partials/head %>
+
+<% include ../partials/navbar %>
+
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <% users.forEach(function(user) { %>
+        <div class="person shadow">
+          <img class="img-circle" src="<%= user.avatar %>" alt="image">
+          <h3><a href="http://localhost:3000/robot/<%= user['_id'] %>"><%= user.name %></a></h3>
+          <p>
+            <% if( user.address.city ) { %>
+              <%= user.address.city %>, <a href="http://localhost:3000/country/<%= user.address.country %>"><%= user.address.country %></a>
+              |
+            <% } %>
+
+            <% if( user.job ) { %>
+              <%= user.job %>, <%= user.company %>
+            <% } else { %>
+              <span>Available for hire</span>
+            <% } %>
+
+          </p>
+          <p>
+            <%= user.email %> | <%= user.phone %>
+          </p>
+          <dl>
+            <% if( user.university ) { %>
+              <dt>Education</dt>
+              <dd><%= user.university %></dd>
+            <% } %>
+            <dt>Skills</dt>
+            <dd>
+              <% user.skills.forEach(function(skill) { %>
+                <a href="http://localhost:3000/skill/<%= skill.uri %>"><%= skill.text %></a>
+              <% }) %>
+            </dd>
+          </dl>
+        </div>
+      <% }); %>
+
+    </div>
+  </div>
+</div>
+
+<% include ../partials/footer %>
+
+<% include ../partials/foot %>
