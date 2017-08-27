@@ -6,4 +6,9 @@
 1. Anonymous user can view entire directory.
 1. Authenticated user can edit only their profile.
 
+# Installation
+
+1. git clone this repo
+1. Read INSTALL.md and follow the instructions to create the db.
+
 <img src="directory.png">
