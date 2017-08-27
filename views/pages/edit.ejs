@@ -42,6 +42,26 @@
             <input type="text" class="form-control" name="skills" value="<%= skillString %>">
           </div>
 
+          <div class="form-group">
+            <label for="street_num">Street Number</label>
+            <input type="text" class="form-control" name="street_num" value="<%= user.address.street_num %>">
+
+            <label for="street_name">Street Name</label>
+            <input type="text" class="form-control" name="street_name" value="<%= user.address.street_name %>">
+
+            <label for="city">City</label>
+            <input type="text" class="form-control" name="city" value="<%= user.address.city %>">
+
+            <label for="state_or_province">State or Province</label>
+            <input type="text" class="form-control" name="state_or_province" value="<%= user.address.state_or_province %>">
+
+            <label for="postal_code">Postal Code</label>
+            <input type="text" class="form-control" name="postal_code" value="<%= user.address.postal_code %>">
+
+            <label for="country">Country</label>
+            <input type="text" class="form-control" name="country" value="<%= user.address.country %>">
+          </div>
+
           <button type="submit" class="btn btn-default">Cancel</button>
           <button type="submit" class="btn btn-primary">Update</button>
         </form>

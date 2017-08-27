@@ -126,13 +126,15 @@ router.get('/robot/:id', (req, res) => {
 router.get('/edit/:id', requireLogin, (req, res) => {
   // TODO: logged in users can grab id of another user
   // and edit that user. Need to fix this.
+  // image should be in req.files because of body-parser
   let searchId = req.params.id;
 
   Robot.find({"_id": searchId})
     .then( (docs) => {
       // make skills into a comma-separated list for the form
       let skillString = docs[0].skills.join(',');
-      console.log(skillString);
+      // encode the skills for the profile display at the end of the form
+      docs = encodeSkills(docs);
       res.render('pages/edit', {users: docs, userInfo: req.user, skillString: skillString});
     })
     .catch( (err) => {
@@ -150,6 +152,13 @@ router.post('/edit/:id', (req, res) => {
   let newCompany = req.body.company || '';
   let newPhone = req.body.phone || '';
 
+  let newStreetNum = req.body.street_num || '';
+  let newStreetName = req.body.street_name || '';
+  let newCity = req.body.city || '';
+  let newStateOrProvince = req.body.state_or_province || '';
+  let newPostalCode = req.body.postal_code || '';
+  let newCountry = req.body.country || '';
+
   let newSkills = req.body.skills.split(',') || '';
 
   Robot.findByIdAndUpdate(
@@ -161,7 +170,16 @@ router.post('/edit/:id', (req, res) => {
                job: newJob,
                company: newCompany,
                phone: newPhone,
-               skills: newSkills}
+               skills: newSkills,
+               address: {
+                 street_num: newStreetNum,
+                 street_name: newStreetName,
+                 city: newCity,
+                 state_or_province: newStateOrProvince,
+                 postal_code: newPostalCode,
+                 country: newCountry,
+                 }
+               }
       },
       {
         new: true
